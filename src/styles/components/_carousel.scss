@@ -1,0 +1,49 @@
+.carousel {
+	display: flex;
+
+	&__section {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+	}
+
+	&__wrapper {
+		padding-top: 25vh;
+	}
+
+	&__item {
+		flex: 1;
+		position: relative;
+
+		&[data-item-active='true'] {
+			flex: 2;
+		}
+
+		&-image {
+			position: relative;
+			aspect-ratio: 3/4;
+		}
+
+		&-content {
+			position: absolute;
+			bottom: 100%;
+			padding-bottom: 0.5rem;
+			font-size: clamp(1rem, calc((20 / 1920) * 150vw), 1.25rem);
+
+			.number {
+				margin-bottom: 1.5rem;
+			}
+
+			.title {
+				font-weight: 500;
+				margin-bottom: 0.5rem;
+			}
+
+			.type {
+				text-transform: uppercase;
+				font-size: clamp(0.75rem, calc((16 / 1920) * 150vw), 1rem);
+			}
+		}
+	}
+}
