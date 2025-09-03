@@ -1,3 +1,4 @@
+import { ViewProvider } from '@/context/ViewContext';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -5,8 +6,10 @@ export default function MainLayout({ children }) {
 	return (
 		<div className='site-wrapper'>
 			<Header />
-			{children}
-			<Footer />
+			<ViewProvider>
+				{children}
+				<Footer />
+			</ViewProvider>
 		</div>
 	);
 }

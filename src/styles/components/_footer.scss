@@ -14,7 +14,7 @@
 		align-items: center;
 		gap: 0.5ch;
 		position: relative;
-		z-index: 1;
+		z-index: 101;
 
 		button {
 			font-size: clamp(1rem, calc((20 / 1920) * 150vw), 1.25rem);
@@ -30,6 +30,8 @@
 		font-size: calc((310 / 1920) * 100vw);
 		letter-spacing: -0.05em;
 		line-height: calc((310 / 1920) * 100vw);
+		position: relative;
+		z-index: 0;
 
 		span {
 			font-style: italic;
