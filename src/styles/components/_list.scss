@@ -50,6 +50,8 @@
 			letter-spacing: -0.02em;
 			line-height: 1;
 			overflow: hidden;
+			// opacity: 0.25;
+			// transition: 250ms ease;
 
 			&:not(:last-child) {
 				span {
@@ -62,6 +64,11 @@
 			span {
 				display: inline-block;
 			}
+
+			// &:hover,
+			// &[data-item-active='true'] {
+			// 	opacity: 1;
+			// }
 		}
 	}
 }

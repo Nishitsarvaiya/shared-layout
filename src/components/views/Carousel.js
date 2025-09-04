@@ -1,30 +1,23 @@
 'use client';
 
+import useWindow from '@/hooks/useWindow';
 import { PROJECTS } from '@/lib/constants';
-import { cubicBezier, motion } from 'motion/react';
+import { transitionFluid } from '@/lib/transitionHelpers';
+import { motion } from 'motion/react';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 
 export default function Carousel() {
 	const count = PROJECTS.length;
 	const [itemWidth, setItemWidth] = useState(0);
-	const [windowDimensions, setWindowDimensions] = useState({ width: 0, height: 0 });
-	const [isMobile, setIsMobile] = useState(false);
+	const { isMobile, windowDimensions } = useWindow();
 
 	useEffect(() => {
 		const onResize = () => {
-			const width = window.innerWidth;
-			const height = window.innerHeight;
-			setWindowDimensions({ width, height });
-
-			if (width < 992) {
-				// Mobile: show only 3 items
-				setIsMobile(true);
-				setItemWidth(width / 3);
+			if (isMobile) {
+				setItemWidth(windowDimensions.width / 3);
 			} else {
-				// Desktop: show all items
-				setIsMobile(false);
-				setItemWidth(width / count);
+				setItemWidth(windowDimensions.width / count);
 			}
 		};
 
@@ -32,9 +25,7 @@ export default function Carousel() {
 
 		window.addEventListener('resize', onResize);
 		return () => window.removeEventListener('resize', onResize);
-	}, [count]);
-
-	// Filter projects for mobile view
+	}, [count, isMobile, windowDimensions]);
 
 	return (
 		<motion.section className='carousel__section'>
@@ -44,12 +35,10 @@ export default function Carousel() {
 						let isMiddle, isLeft, isRight;
 
 						if (isMobile) {
-							// Mobile: 3 items - left (0), middle (1), right (2)
 							isLeft = index === 0;
 							isMiddle = index === 1;
 							isRight = index === 2;
 						} else {
-							// Desktop: all items with original logic
 							isMiddle = index === Math.floor(count / 2);
 							isLeft = index < Math.floor(count / 2);
 							isRight = index > Math.floor(count / 2);
@@ -67,56 +56,58 @@ export default function Carousel() {
 							xOffset = -itemWidth * offsetMultiplier;
 						}
 
+						let zIndex = 0;
+						if (isMobile) {
+							zIndex = index === 1 ? count + 1 : count - index;
+						} else {
+							zIndex = index === 3 ? count + 1 : count - index;
+						}
+
 						return (
 							<motion.div
 								className='carousel__item'
 								key={project.id}
 								layoutId={`project-${project.id}`}
 								style={{
-									zIndex: index === 3 ? count + 1 : count - index,
+									zIndex,
 								}}
 								animate={{
 									width: itemWidth,
 									left: index * itemWidth + xOffset,
 									transition: {
-										duration: 1.2,
-										ease: [0.6, 0, 0.12, 1],
-										delay: 0.08 * index,
+										...transitionFluid,
+										delay: 0.05 * index,
 									},
 								}}
 								exit={{
 									width: itemWidth,
-									// top: '50%',
-									// left: '50%',
-									// x: '-50%',
 									y: '-50%',
 									top: windowDimensions.height / 2 - (itemWidth * 340) / 270,
 									left: windowDimensions.width / 2 - itemWidth / 2,
-									scale: isMobile ? 2 : middleSizeMultiplier,
+									scale: isMobile ? 2 : 1.5,
 									transition: {
-										duration: 1.2,
-										ease: [0.6, 0, 0.12, 1],
+										...transitionFluid,
 									},
-								}}>
+								}}
+							>
 								<motion.div
 									className='carousel__item-image'
 									animate={{
 										width: isMiddle ? `${middleSizeMultiplier * 100}%` : '100%',
 										height: isMiddle ? `${middleSizeMultiplier * 100}%` : '100%',
 										transition: {
-											duration: 1.2,
-											ease: [0.6, 0, 0.12, 1],
-											delay: 0.08 * index,
+											...transitionFluid,
+											delay: 0.05 * index,
 										},
 									}}
 									exit={{
 										width: '100%',
 										height: '100%',
 										transition: {
-											duration: 1.2,
-											ease: [0.6, 0, 0.12, 1],
+											...transitionFluid,
 										},
-									}}>
+									}}
+								>
 									<div className='carousel__item-image-inner'>
 										<Image
 											src={project.image}
@@ -131,12 +122,13 @@ export default function Carousel() {
 									initial={{ opacity: 0 }}
 									animate={{
 										opacity: 1,
-										transition: { duration: 0.5, ease: cubicBezier(0, 0, 0.5, 1), delay: 1.25 },
+										transition: { ...transitionFluid, duration: 0.5, delay: 0.5 },
 									}}
 									exit={{
 										opacity: 0,
-										transition: { duration: 0.25, ease: cubicBezier(0, 0, 0.5, 1) },
-									}}>
+										transition: { ...transitionFluid, duration: 0.25 },
+									}}
+								>
 									<div className='number'>{project.id < 10 ? `0${project.id}` : project.id}.</div>
 									<div className='title'>{project.title}</div>
 									<div className='type'>[ {project.type} ]</div>

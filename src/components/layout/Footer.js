@@ -23,7 +23,8 @@ export default function Footer() {
 			className='footer'
 			initial={{ opacity: 0 }}
 			animate={{ opacity: 1 }}
-			transition={{ duration: 0.8, ease: cubicBezier(0.745, 0.045, 0.255, 1) }}>
+			transition={{ duration: 0.8, ease: cubicBezier(0.745, 0.045, 0.255, 1) }}
+		>
 			<div className='container'>
 				<div className='footer__actions'>
 					<div className='footer__switch-layout-btns'>
@@ -39,7 +40,8 @@ export default function Footer() {
 									damping: 85,
 									mass: 1,
 								},
-							}}>
+							}}
+						>
 							Carousel,
 						</motion.button>
 						<motion.button
@@ -54,7 +56,8 @@ export default function Footer() {
 									damping: 85,
 									mass: 1,
 								},
-							}}>
+							}}
+						>
 							List
 						</motion.button>
 					</div>
@@ -69,7 +72,8 @@ export default function Footer() {
 								damping: 85,
 								mass: 1,
 							},
-						}}>
+						}}
+					>
 						London, UK 17:21
 					</motion.div>
 				</div>
@@ -84,7 +88,8 @@ export default function Footer() {
 							damping: 85,
 							mass: 1,
 						},
-					}}>
+					}}
+				>
 					Ross<span>mason</span>
 				</motion.div>
 			</div>

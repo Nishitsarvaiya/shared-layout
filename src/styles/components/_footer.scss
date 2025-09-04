@@ -22,6 +22,11 @@
 			background: none;
 			border: none;
 			cursor: pointer;
+			opacity: 0.25;
+
+			&.active {
+				opacity: 1;
+			}
 		}
 	}
 
